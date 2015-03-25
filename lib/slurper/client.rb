@@ -2,23 +2,30 @@ require 'typhoeus'
 
 module Slurper
   class Client
-    CREATE_STORY_URL = "https://www.pivotaltracker.com/services/v5/projects/#{Slurper::Config.project_id}/stories"
-    USERS_URL        = "https://www.pivotaltracker.com/services/v5/projects/#{Slurper::Config.project_id}/memberships"
+    attr_reader :write_token, :list_id
 
-    def self.create(story)
-      Typhoeus.post CREATE_STORY_URL,
-        body: story.to_json,
-        headers: {
-          "Content-Type" => "application/json",
-          "X-TrackerToken" => Slurper::Config.token
-        }
+    def initialize
+      get_trello_write_token
+      create_list
     end
 
-    def self.users
-      JSON.parse(Typhoeus.get(
-        USERS_URL,
-        headers: { "X-TrackerToken" => Slurper::Config.token }
-      ).try(:body) || '[]')
+    def get_trello_write_token
+      url = "https://trello.com/1/authorize?key=#{Slurper::Config.trello_application_key}&name=Slurper%20for%20Trello&expiration=1day&response_type=token&scope=read%2Cwrite"
+      puts "You must provide a write-enabled Trello API token. Press any key to open a browser window to fetch this token."
+      _ = gets
+      `open "#{url}"`
+      puts "Please paste your token."
+      @write_token = gets.strip
+    end
+
+    def create_list
+      url = "https://trello.com/1/boards/#{Slurper::Config.trello_board_id}/lists?key=#{Slurper::Config.trello_application_key}&token=#{write_token}&name=Slurper%20Import"
+      @list_id = JSON.parse(Typhoeus.post(url).body)["id"]
+    end
+
+    def create_card(story)
+      url = "https://trello.com/1/lists/#{list_id}/cards?key=#{Slurper::Config.trello_application_key}&token=#{write_token}"
+      Typhoeus.post url, body: story.to_post_params
     end
   end
 end

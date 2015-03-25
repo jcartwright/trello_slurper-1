@@ -2,9 +2,8 @@ module Slurper
 
   class Config
 
-    def self.project_id; @project_id ||= yaml['project_id'] end
-    def self.requested_by; @requested_by ||= yaml['requested_by'] end
-    def self.token; @token ||= yaml['token'] end
+    def self.trello_application_key; @trello_application_key ||= yaml['trello_application_key'] end
+    def self.trello_board_id; @trello_board_id ||= yaml['trello_board_id'] end
 
     private
 

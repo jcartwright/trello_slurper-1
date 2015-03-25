@@ -1,6 +1,13 @@
 module Slurper
   class Engine < Struct.new(:story_file)
 
+    attr :client
+
+    def initialize(*args)
+      super(*args)
+      @client = Slurper::Client.new
+    end
+
     def stories
       @stories ||= YAML.load(yamlize_story_file).map { |attrs| Slurper::Story.new(attrs) }
     end
@@ -11,7 +18,7 @@ module Slurper
 
       puts "Preparing to slurp #{stories.size} stories into Tracker..."
       stories.each_with_index do |story, index|
-        if story.save
+        if client.create_card(story)
           puts "#{index+1}. #{story.name}"
         else
           puts "Slurp failed. #{story.error_message}"
