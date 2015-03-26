@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |gem|
   gem.name = "trello_slurper"
-  gem.version = "0.0.1"
+  gem.version = "0.0.2"
   gem.license = "MIT"
 
   gem.authors = ["Adam Lowe", "Paul Elliott", "Taylor Mock", "Nickolas Means"]
@@ -11,7 +11,7 @@ Gem::Specification.new do |gem|
   gem.email = "dev@wellmatchhealth.com"
   gem.executables = ["slurp"]
   gem.extra_rdoc_files = ["README.rdoc"]
-  gem.files = Dir.glob("lib/**/*") + %w(bin/slurp MIT_LICENSE README.rdoc Rakefile)
+  gem.files = Dir.glob("lib/**/*") + %w(bin/tslurp MIT_LICENSE README.rdoc Rakefile)
   gem.homepage = "http://github.com/nmeans/trello_slurper"
   gem.rdoc_options = ["--charset=UTF-8"]
   gem.require_path = "lib"

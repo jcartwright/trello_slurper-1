@@ -6,6 +6,8 @@ module Slurper
     def initialize(*args)
       super(*args)
       @client = Slurper::Client.new
+      @client.get_trello_write_token
+      @client.create_list
     end
 
     def stories
@@ -16,7 +18,7 @@ module Slurper
       puts "Validating story content"
       stories.each(&:valid?)
 
-      puts "Preparing to slurp #{stories.size} stories into Tracker..."
+      puts "Preparing to slurp #{stories.size} stories into Trello..."
       stories.each_with_index do |story, index|
         if client.create_card(story)
           puts "#{index+1}. #{story.name}"

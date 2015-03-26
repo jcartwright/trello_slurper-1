@@ -4,14 +4,10 @@ module Slurper
   class Client
     attr_reader :write_token, :list_id
 
-    def initialize
-      get_trello_write_token
-      create_list
-    end
-
     def get_trello_write_token
       url = "https://trello.com/1/authorize?key=#{Slurper::Config.trello_application_key}&name=Slurper%20for%20Trello&expiration=1day&response_type=token&scope=read%2Cwrite"
-      puts "You must provide a write-enabled Trello API token. Press any key to open a browser window to fetch this token."
+      puts "You must provide a write-enabled Trello API token."
+      puts "Ensure you're logged into Trello, then press the <ENTER> key to open a browser window to fetch this token."
       _ = gets
       `open "#{url}"`
       puts "Please paste your token."

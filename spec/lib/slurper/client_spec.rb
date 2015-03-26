@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Slurper::Client do
-  subject { Slurper::Client }
+  subject { Slurper::Client.new }
 
   it 'uses the project id in the url' do
     expect(described_class::CREATE_STORY_URL).to eq "https://www.pivotaltracker.com/services/v5/projects/12345/stories"

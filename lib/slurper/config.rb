@@ -8,7 +8,7 @@ module Slurper
     private
 
     def self.yaml
-      YAML.load_file('slurper_config.yml')
+      YAML.load_file('tslurper_config.yml')
     end
 
   end
