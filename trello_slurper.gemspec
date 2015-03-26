@@ -6,10 +6,10 @@ Gem::Specification.new do |gem|
   gem.license = "MIT"
 
   gem.authors = ["Adam Lowe", "Paul Elliott", "Taylor Mock", "Nickolas Means"]
-  gem.default_executable = 'slurp'
+  gem.default_executable = 'tslurp'
   gem.description = "Slurps stories from the given file (stories.slurper by default) and creates Trello cards from them. Useful during story carding sessions when you want to capture a number of stories quickly without clicking your way through the Tracker UI."
   gem.email = "dev@wellmatchhealth.com"
-  gem.executables = ["slurp"]
+  gem.executables = ["tslurp"]
   gem.extra_rdoc_files = ["README.rdoc"]
   gem.files = Dir.glob("lib/**/*") + %w(bin/tslurp MIT_LICENSE README.rdoc Rakefile)
   gem.homepage = "http://github.com/nmeans/trello_slurper"
