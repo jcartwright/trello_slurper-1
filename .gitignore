@@ -5,3 +5,5 @@ tmp
 pkg
 *.gem
 tslurper_config.yml
+.ruby-version
+vendor/ruby/
