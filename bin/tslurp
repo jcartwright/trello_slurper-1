@@ -25,5 +25,8 @@ OptionParser.new do |opts|
 end.parse!
 
 story_file = ARGV.empty? ? "stories.slurper" : ARGV[0]
-
-Slurper.slurp(story_file, options[:reverse])
+if File.file?(story_file)
+  Slurper.slurp(story_file, options[:reverse])
+else
+  puts "#{story_file} does not exist"
+end

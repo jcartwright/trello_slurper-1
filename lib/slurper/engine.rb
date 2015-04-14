@@ -7,7 +7,10 @@ module Slurper
       super(*args)
       @client = Slurper::Client.new
       @client.get_trello_write_token
+      @client.validate_write_token
       @client.create_list
+    rescue => e
+      puts e
     end
 
     def stories
