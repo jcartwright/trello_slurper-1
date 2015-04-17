@@ -6,11 +6,6 @@ module Slurper
     def initialize(*args)
       super(*args)
       @client = Slurper::Client.new
-      @client.get_trello_write_token
-      @client.validate_write_token
-      @client.create_list
-    rescue => e
-      puts e
     end
 
     def stories
@@ -20,6 +15,12 @@ module Slurper
     def process
       puts "Validating story content"
       stories.each(&:valid?)
+
+      puts "Validating write access to Trello Board"
+      client.validate_write_token
+
+      puts "Creating Slurper Import List"
+      client.create_list
 
       puts "Preparing to slurp #{stories.size} stories into Trello..."
       stories.each_with_index do |story, index|

@@ -5,3 +5,8 @@ trello_application_key: 123abc123abc123abc123abc
 # Trello board id is the 8 character string after /b/ in the board url.
 # Ex. '1a2abcdc' is the board id in https://trello.com/b/1a2abcdc/test-board
 trello_board_id: 1a2abcdc
+
+# Trello requires a write-enabled token in order to create lists and stories.
+# According to the API docs, you can request a "forever" token, or set an
+# expiration length in the request to generate the token.
+trello_write_token: 9870abcd9870abcd9807abcd

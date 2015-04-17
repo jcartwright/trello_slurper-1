@@ -1,16 +1,15 @@
 #!/usr/bin/env ruby
 
 # Slurps stories from the given file (stories.slurper by default) and creates
-# Pivotal Tracker stories from them. Useful during story carding sessions
+# Trello story cards from them. Useful during story carding sessions
 # when you want to capture a number of stories quickly without clicking
-# your way through the Tracker UI.
+# your way through the Trello UI.
 
 # Default story values and API token information should be provided in a
-# ~/.slurper.yml file.
+# tslurper_config.yml file.
 
-# Note that if you include labels in stories.slurper, they don't appear
-# immediately in Tracker. You'll have to refresh Tracker after a few seconds
-# to see them.
+# Note that if you include labels in stories.slurper, they aren't currently
+# supported and will be ignored.
 
 $:.unshift(File.join(File.dirname(File.dirname(__FILE__)),'lib'))
 require 'rubygems'
@@ -18,15 +17,46 @@ require 'slurper'
 require 'optparse'
 
 options = {}
-OptionParser.new do |opts|
+args = OptionParser.new do |opts|
   opts.on("-r", "--reverse", "Reverse story creation order") do |v|
     options[:reverse] = v
   end
+  opts.on("-t", "--create-token", "Request a new write token from Trello") do |v|
+    options[:token] = v
+  end
+  opts.on("-f", "--story-file FILE", "Story File to slurp, defaults to stories.slurper") do |v|
+    options[:story_file] = v
+  end
+  opts.on("-h", "--help", "Show help for tslurp") do
+    puts opts
+    exit
+  end
 end.parse!
 
-story_file = ARGV.empty? ? "stories.slurper" : ARGV[0]
-if File.file?(story_file)
+# capture file passed w/o -f/--story-file flag
+if args.any?
+  options[:story_file] ||= args.first
+end
+
+begin
+  if options[:token] || Slurper::Config.trello_write_token.blank?
+    client = Slurper::Client.new
+    token = client.get_trello_write_token
+    if token.blank?
+      raise "No token was provided. Exiting..."
+    else
+      puts "Your tslurper_config.yml has been updated with the new token."
+    end
+  end
+
+  story_file = options.fetch(:story_file, "stories.slurper")
+  raise "#{story_file} does not exist" unless File.file?(story_file)
+  raise "Configuration is not valid\n#{Slurper::Config.errors}" unless Slurper::Config.valid?
+
   Slurper.slurp(story_file, options[:reverse])
-else
-  puts "#{story_file} does not exist"
+rescue => e
+  puts '=' * 80
+  puts e.message
+  puts e.backtrace
+  puts '=' * 80
 end
