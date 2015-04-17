@@ -7,4 +7,5 @@ gemspec
 
 gem 'configuration'
 gem 'pry'
+gem 'pry-byebug'
 gem 'rspec'

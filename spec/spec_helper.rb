@@ -1,4 +1,5 @@
 require 'bundler'
+require 'slurper'
 
 Bundler.require(:default, :development)
 
